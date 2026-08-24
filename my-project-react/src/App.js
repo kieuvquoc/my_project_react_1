@@ -1,12 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import MenuLeft from './components/MenuLeft';
+import Header from './components/Layout/Header';
+import Footer from './components/Layout/Footer';
+import MenuLeft from './components/Layout/MenuLeft';
 
 function App(props) {
   return (
-    <div className="App">
+    <>
       <Header/>
       <section>
         <div className="container">
@@ -17,7 +17,7 @@ function App(props) {
         </div>
       </section>
       <Footer/>
-    </div>
+    </>
   );
 }
 

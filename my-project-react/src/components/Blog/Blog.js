@@ -1,6 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Api from '../Api/Api'
 
 function Blog(){
     const [getData,setData]=useState([])
@@ -10,7 +11,7 @@ function Blog(){
     useEffect(()=>{
       async function LoadBlog(){
         try{
-          let response=await axios.get("http://127.0.0.1:8000/api/blog")
+          let response=await Api.get("/api/blog/")
           setData(response.data.blog.data)
         }
         catch(error){
@@ -27,7 +28,7 @@ function Blog(){
       e.preventDefault();
       setLoading(true);
       try{
-        let response=await axios.get(`http://127.0.0.1:8000/api/blog?page=${numberpage}`)
+        let response=await Api.get(`/api/blog?page=${numberpage}`)
         setData(response.data.blog.data)
       }
       catch(error){
@@ -63,10 +64,10 @@ function Blog(){
                   </span>
                 </div>
                 <a href>
-                  <img src={`http://127.0.0.1:8000/upload/Blog/image/${item.image}`} alt="" />
+                  <img src={(`http://127.0.0.1:8000/upload/Blog/image/${item.image}`)} alt="" />
                 </a>
                 <p>{item.description}</p>
-                <Link to={"/BlogDetail/"+item.id}>Read More</Link>
+                <Link to={"/blog/detail/"+item.id}>Read More</Link>
               </div>
         )
       })

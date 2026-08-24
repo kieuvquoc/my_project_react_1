@@ -8,8 +8,10 @@ import {
 } from "react-router-dom";
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Blog from './components/Blog';
-import BlogDetail from './components/BlogDetail';
+import Blog from './components/Blog/Blog';
+import BlogDetail from './components/Blog/BlogDetail';
+import Register from './components/Member/Register';
+import Login from './components/Member/Login';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -17,8 +19,10 @@ root.render(
     <Router>
        <App>
           <Routes>
-            <Route path="/Blog" element={<Blog/>}/>
-            <Route path="/BlogDetail" element={<BlogDetail/>}/>
+            <Route path="/blog" element={<Blog/>}/>
+            <Route path="/blog/detail" element={<BlogDetail/>}/>
+            <Route path="/register" element={<Register/>}/>
+            <Route path="/login" element={<Login/>}/>
           </Routes>
        </App>
     </Router>
