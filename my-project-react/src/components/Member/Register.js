@@ -9,7 +9,7 @@ function Register(props){
         phone:"",
         address:"",
         avatar:null,
-        lever:0,
+        level:0,
         file:""
     });
     const [getErrors,setErrors]=useState({});
@@ -103,14 +103,19 @@ function Register(props){
                 phone:getInputs.phone,
                 address:getInputs.address,
                 avatar:getInputs.file,
-                lever:0
+                level:0
             }
             try{
-                let response= await Api.post("/api/register",data)
+                let response= await Api.post("/api/register",data ,{
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                })
                 if(response.data.errors) {
                     setErrors(response.data.errors);
                 } else {
-                    console.log(response);
+                    console.log(response.data);
+                    console.log("Đăng ký thành công");
                     // /alert("Đăng ký thành công");
                     setTimeout(()=>{
                         setInputs({
@@ -120,7 +125,7 @@ function Register(props){
                             phone:"",
                             address:"",
                             avatar:null,
-                            lever:0,
+                            level:0,
                             file:""
                         })
                     },150000)
@@ -156,7 +161,7 @@ function Register(props){
         <input type="file" name="avatar" onChange={ReaderFiles} placeholder="Avatar" />
         <p>{getErrors.avatar}</p>
 
-        <input type="number" name="lever" value={getInputs.lever} onChange={kiemtraInput} placeholder="Lever" />
+        <input type="number" name="level" value={getInputs.level} onChange={kiemtraInput} placeholder="Lever" />
 
         <button type="submit" className="btn btn-default">Signup</button>
         </form>

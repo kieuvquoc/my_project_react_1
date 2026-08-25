@@ -1,7 +1,8 @@
 import React, {useState,useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Api from '../Api/Api'
+import Api from '../Api/Api';
+import KiemTraLogin from '../Member/KiemTraLogin';
 
 function Blog(){
     const [getData,setData]=useState([])
@@ -76,6 +77,7 @@ function Blog(){
 
     return(
       <>
+        {<KiemTraLogin/>}
         <div className="col-sm-9">
             <div className="blog-post-area">
               <h2 className="title text-center">Latest From our Blog</h2>

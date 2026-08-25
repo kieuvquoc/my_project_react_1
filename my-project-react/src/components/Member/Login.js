@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Api from '../Api/Api';
-import {useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom';
 
 function Login(){
     const[getInputs,setInputs]=useState({
@@ -56,18 +56,21 @@ function Login(){
       else{
         const data={
           email: getInputs.email,
-          password: getInputs.password
+          password: getInputs.password,
+          level: getInputs.level
         }
 
         try{
           let response =await Api.post(`/api/login`,data)
           if(response.data.errors){
             setErrors(response.data.errors);
-            console.log(response.data.errors);
+            console.log(response.data.errors.errors);
           }
           else{
+            localStorage.setItem('loginUser','true');
             console.log("Login thanh cong");
-            navigate('/');
+            console.log(response.data);
+            navigate('/blog');
             setTimeout(()=>{
               setInputs({
                 email: "",

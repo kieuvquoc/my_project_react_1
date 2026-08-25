@@ -9,11 +9,29 @@ import {
   Lock, 
   ChevronDown 
 } from 'lucide-react';
-
+import {useNavigate, Link} from 'react-router-dom';
 // Import các icon mạng xã hội từ react-icons/fa (FontAwesome)
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaDribbble } from 'react-icons/fa';
 
 const Header = () => {
+  let kiemtra=localStorage.getItem('loginUser');
+  let Navigate=useNavigate();
+  function logout(e){
+    e.preventDefault();
+    if(kiemtra){
+      localStorage.clear();
+      Navigate('/login');
+    }
+  }
+  function kiemtralogin(){
+    if(kiemtra){
+      return <li><Link onClick={logout}><Lock size={14} className="inline-block mr-1" /> Logout</Link></li>
+    }
+    else{
+      return <li><Link to="/login"><Lock size={14} className="inline-block mr-1" /> Login</Link></li>
+    }
+  }
+
   return (
     <header id="header">
       {/* header_top */}
@@ -92,6 +110,7 @@ const Header = () => {
                   <li><a href="checkout.html"><Crosshair size={14} className="inline-block mr-1" /> Checkout</a></li>
                   <li><a href="cart.html"><ShoppingCart size={14} className="inline-block mr-1" /> Cart</a></li>
                   <li><a href="login.html"><Lock size={14} className="inline-block mr-1" /> Login</a></li>
+                  {kiemtralogin()}
                 </ul>
               </div>
             </div>
