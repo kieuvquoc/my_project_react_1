@@ -68,6 +68,8 @@ function Login(){
           }
           else{
             localStorage.setItem('loginUser','true');
+            let JsonString=JSON.stringify(response.data)
+            localStorage.setItem('userData',JsonString);
             console.log("Login thanh cong");
             console.log(response.data);
             navigate('/blog');

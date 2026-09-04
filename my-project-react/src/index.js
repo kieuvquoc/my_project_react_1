@@ -12,6 +12,7 @@ import Blog from './components/Blog/Blog';
 import BlogDetail from './components/Blog/BlogDetail';
 import Register from './components/Member/Register';
 import Login from './components/Member/Login';
+import Comment from './components/Blog/Comment';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -20,9 +21,10 @@ root.render(
        <App>
           <Routes>
             <Route path="/blog" element={<Blog/>}/>
-            <Route path="/blog/detail" element={<BlogDetail/>}/>
+            <Route path="/blog/detail/:id" element={<BlogDetail/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/login" element={<Login/>}/>
+            <Route path="/Comment" element={<Comment/>}/>
           </Routes>
        </App>
     </Router>
