@@ -65,7 +65,7 @@ const BlogDetail=()=>{
                     <li><i className="fa fa-calendar" /> MAY 26, 2026</li>
                   </ul>
                 </div>
-                <a href>
+                <a href="#!">
                   <img src={`http://127.0.0.1:8000/upload/Blog/image/${getData.image}`} alt="" />
                 </a>
                 <p>{getData.content}</p> <br />
@@ -97,13 +97,13 @@ const BlogDetail=()=>{
               </ul>
               <ul className="tag">
                 <li>TAG:</li>
-                <li><a className="color" href>Pink <span>/</span></a></li>
-                <li><a className="color" href>T-Shirt <span>/</span></a></li>
-                <li><a className="color" href>Girls</a></li>
+                <li><a className="color" href="#!">Pink <span>/</span></a></li>
+                <li><a className="color" href="#!">T-Shirt <span>/</span></a></li>
+                <li><a className="color" href="#!">Girls</a></li>
               </ul>
             </div>
             <div className="socials-share">
-              <a href><img src="images/blog/socials.png" alt="" /></a>
+              <a href="#!"><img src="images/blog/socials.png" alt="" /></a>
             </div>{/*/socials-share*/}
             <div className="response-area">
               <h2>RESPONSES</h2>

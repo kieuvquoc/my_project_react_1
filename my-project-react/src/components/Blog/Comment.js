@@ -66,7 +66,7 @@ function Comment(props){
                       <label>Your Name</label>
                     </div>
                     <span>*</span>
-                    <textarea id="form-comment" value={getMess} name="message" onChange={NhapMess} rows={11} defaultValue={""} />
+                    <textarea id="form-comment" value={getMess} name="message" onChange={NhapMess} rows={11} />
                     <a onClick={UpMess} className="btn btn-primary" href="#">post comment</a>
                   </div>
                 </div>

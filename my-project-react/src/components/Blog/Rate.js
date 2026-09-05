@@ -51,7 +51,6 @@ function Rate(props){
         catch(error){
             console.log("Da xay ra loi khi danh gia sao",error);
         }
-        // - xu ly logic
     }
        
     return (

@@ -1,7 +1,9 @@
 import React,{useState} from 'react';
-import Api from '../Api/Api'
+import Api from '../Api/Api';
+import {useNavigate} from 'react-router-dom';
 
 function Register(props){
+    const navigate=useNavigate();
     const [getInputs,setInputs]=useState({
         name:"",
         email:"",
@@ -116,6 +118,7 @@ function Register(props){
                 } else {
                     console.log(response.data);
                     console.log("Đăng ký thành công");
+                    navigate("/login");
                     // /alert("Đăng ký thành công");
                     setTimeout(()=>{
                         setInputs({

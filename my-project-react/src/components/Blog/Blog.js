@@ -64,7 +64,7 @@ function Blog(){
                     <i className="fa fa-star-half-o" />
                   </span>
                 </div>
-                <a href>
+                <a href="#!">
                   <img src={(`http://127.0.0.1:8000/upload/Blog/image/${item.image}`)} alt="" />
                 </a>
                 <p>{item.description}</p>
