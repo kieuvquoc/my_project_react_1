@@ -2,7 +2,6 @@ import React from 'react';
 
 function MenuLeft() {
   return (
-    <div className="col-sm-3">
       <div className="left-sidebar">
         <h2>Category</h2>
         
@@ -169,7 +168,6 @@ function MenuLeft() {
         {/* /shipping */}
 
       </div>
-    </div>
   );
 }
 
