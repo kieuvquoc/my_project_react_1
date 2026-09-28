@@ -1,13 +1,22 @@
 import {useEffect,useState} from 'react';
 import Api from '../Api/Api';
+import {Link} from 'react-router-dom';
 
 function MyProduct(){
-  const [getProducts,setProducts]=useState([]);
+  const [getProducts,setProducts]=useState({});
 
     useEffect(()=>{
       async function fetchData(){
+        let userData=JSON.parse(localStorage.getItem("userData"));
+        let accessToken=userData?.token;
+        let config = {
+                    headers: {
+                        'Authorization': 'Bearer ' + accessToken,
+                        'Accept': 'application/json'
+                    }
+                };
         try{
-          let res=await Api.get('/api/product')
+          let res = await Api.get('/api/user/my-product', config);
           if(res.error){
             console.log("Da xay ra loi",res.error);
           }
@@ -26,15 +35,17 @@ function MyProduct(){
     },[])
 
     const loadProducts=()=>{
-      if(getProducts&&getProducts.length>0){
-        return getProducts.map((product,index)=>{
+      if(Object.values(getProducts)&&Object.values(getProducts).length>0){
+        return Object.values(getProducts).map((product,index)=>{
           let LoadAnh="";
           try{
             if(product.image){
-              let imageArr=JSON.parse(product.image);
-              if(imageArr.length>0){
-                LoadAnh=imageArr[0];
+              let imageArr=typeof product.image==='string'
+              ?JSON.parse(product.image):product.image;
+              if(Array.isArray(imageArr)&&imageArr.length>0){
+                LoadAnh = imageArr[imageArr.length - 1];
               }
+              console.log("Danh sach anh:", product.image);
             }
           }
           catch(e){
@@ -55,8 +66,8 @@ function MyProduct(){
                 <p>${product.price}</p>
               </td>
               <td className="cart_total">
-                <a href="!#">edit</a>
-                <a href="!#">delete</a>
+                <Link to={`/account/editproduct/${product.id}`}>edit</Link>
+                <button className="btn btn-danger">Delete</button>
               </td>
             </tr>
           )

@@ -15,7 +15,7 @@ function App(props) {
         <div className="container">
           <div className="row">
             <div className="col-sm-3">
-              {location.pathname.startsWith('/account') && <MenuAcc/>}
+              {location.pathname.startsWith('/account') ? <MenuAcc/> : <MenuLeft/>}
             </div>
             <div className="col-sm-9">
               {props.children}

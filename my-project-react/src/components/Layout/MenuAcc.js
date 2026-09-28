@@ -16,11 +16,18 @@ function MenuAcc(){
           <div className="panel panel-default">
             <div className="panel-heading">
               <h4 className="panel-title">
-                <Link to="/account/my-product">My Product</Link>
+                <Link to="/account/myproduct">My Product</Link>
               </h4>
             </div>
           </div>
 
+          <div className="panel panel-default">
+            <div className="panel-heading">
+              <h4 className="panel-title">
+                <Link to="/account/addproduct">Add Product</Link>
+              </h4>
+            </div>
+          </div>
         </div>
       </div>
     )
