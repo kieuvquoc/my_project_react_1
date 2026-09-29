@@ -17,6 +17,9 @@ import Update from './components/Member/Update';
 import MyProduct from './components/Product/MyProduct';
 import AddProduct from './components/Product/AddProduct';
 import EditProduct from './components/Product/EditProduct';
+import DeleteProduct from './components/Product/DeleteProduct';
+import Home from './components/Member/Home';
+import ProductDetail from './components/Product/ProductDetail';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -33,6 +36,9 @@ root.render(
             <Route path="/account/myproduct" element={<MyProduct/>}/>
             <Route path="/account/addproduct" element={<AddProduct/>}/>
             <Route path="/account/editproduct/:id" element={<EditProduct/>}/>
+            <Route path="/account/DeleteProduct/:id" element={<DeleteProduct/>}/>
+            <Route path="/home" element={<Home/>}/>
+            <Route path="/product/detail/:id" element={<ProductDetail/>}/>
           </Routes>
        </App>
     </Router>

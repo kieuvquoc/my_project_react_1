@@ -135,7 +135,7 @@ const Header = () => {
               </div>
               <div className="mainmenu pull-left">
                 <ul className="nav navbar-nav collapse navbar-collapse">
-                  <li><a href="index.html">Home</a></li>
+                  <li><a href="/home">Home</a></li>
                   <li className="dropdown">
                     <a href="#shop">Shop <ChevronDown size={14} className="inline-block" /></a>
                     <ul role="menu" className="sub-menu">

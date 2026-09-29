@@ -67,6 +67,7 @@ function MyProduct(){
               </td>
               <td className="cart_total">
                 <Link to={`/account/editproduct/${product.id}`}>edit</Link>
+                <Link to={`/account/DeleteProduct/${product.id}`}>Delete</Link>
                 <button className="btn btn-danger">Delete</button>
               </td>
             </tr>
