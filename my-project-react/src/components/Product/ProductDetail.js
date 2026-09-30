@@ -8,9 +8,8 @@ function ProductDetail(){
     let {id}=useParams();
     let navigate=useNavigate();
     const [getProduct,setProduct]=useState({});
-    const [getSoLuongCart,setSoLuongCart]=useState(
-        JSON.parse(localStorage.getItem('cart'))||{}
-    )
+    const [getQuatity,setQuatity]=useState(1);
+    const [getPrice,setPrice]=useState(0);
 
     useEffect(()=>{
         async function fetchProduct(){
@@ -22,9 +21,10 @@ function ProductDetail(){
             }
             try{
                 let res=await Api.get(`/api/product/detail/${id}`);
-                console.log(res.data);
+                console.log(res.data.data);
                 if(res.data.response){
                     setProduct(res.data.data);
+                    setPrice(res.data.data.price);
                 }
             }
             catch(e){
@@ -32,20 +32,65 @@ function ProductDetail(){
             }
         }
         fetchProduct();
-    },[])
+    },[id])
 
         const responsive = {
         desktop: {
         breakpoint: { max: 3000, min: 1024 },
-        items: 3,   // 👉 hiển thị 3 hình cùng lúc
+        items: 3,
         slidesToSlide: 1
         }
     };
 
+    function ChangeSoLuongCart(e){
+      let value=e.target.value;
+
+      if(value==""){
+        console.log("Chua chon so luong san pham");
+        setQuatity("");
+        return;
+      }
+
+      value = parseInt(value);
+      let price=Number(getProduct.price);
+      
+      if(isNaN(value)||value<1){
+        setQuatity(1);
+        setPrice(price);
+      } else {
+        setQuatity(value);
+        setPrice(price*value);
+      }
+      let cart = JSON.parse(localStorage.getItem("cart")) || {};
+      cart[id] = value;
+      localStorage.setItem("cart",JSON.stringify(cart));
+    }
+
+    function XuLyAddCart(e){
+      if(getQuatity==""){
+        console.log("So luong dang de trong");
+        return;
+      }
+      else if(getQuatity<=0){
+        console.log("So luong phai lon hon 0");
+        return;
+      }
+
+      let cart=JSON.parse(localStorage.getItem("cart")) || {};
+      let price=Number(getProduct.price);
+
+      if(getQuatity>=1){
+        setQuatity(cart[id]);
+        setPrice(price*cart[id])
+      }
+      localStorage.setItem("cart",JSON.stringify(cart));
+      alert("Da them san pham thanh cong");
+    }
+
     const loadProduct=()=>{
-        if(getProduct&&getSoLuongCart){
+        if(getProduct&&getPrice){
             return(
-                    <div key={getProduct.id}>
+                  <div key={getProduct.id}>
                     <div className="col-sm-5">
                         <div className="view-product">
                         <img src={`images/product-details/${getProduct.id}.jpg`} alt="" />
@@ -61,16 +106,10 @@ function ProductDetail(){
                             containerClass="carousel-container"
                             itemClass="carousel-item-padding-40-px"
                             >
-                            <img src="images/product-details/similar1.jpg" alt="" />
-                            <img src="images/product-details/similar1.jpg" alt="" />
-                            <img src="images/product-details/similar1.jpg" alt="" />
+                            <img src={`images/product-details/${getProduct.image}`} alt="" />
+                            <img src={`images/product-details/${getProduct.image}`} alt="" />
+                            <img src={`images/product-details/${getProduct.image}`} alt="" />
                         </Carousel>
-                        <a className="left item-control" href="#similar-product" data-slide="prev">
-                            <i className="fa fa-angle-left" />
-                        </a>
-                        <a className="right item-control" href="#similar-product" data-slide="next">
-                            <i className="fa fa-angle-right" />
-                        </a>
                         </div>
                     </div>
                     <div className="col-sm-7">
@@ -80,10 +119,10 @@ function ProductDetail(){
                         <p>Web ID: {getProduct.id}</p>
                         <img src="images/product-details/rating.png" alt="" />
                         <span>
-                            <span>US $ {getProduct.price}</span>
+                            <span>US $ {getPrice}</span>
                             <label>Quantity:</label>
-                            <input type="text" value={getSoLuongCart[id]||1} onChange={(e)=>setSoLuongCart(e.target.value)}/>
-                            <button type="button" className="btn btn-fefault cart">
+                            <input type="text" id="Cart" name="SoLuongCart" value={getQuatity} onChange={ChangeSoLuongCart}/>
+                            <button type="button" className="btn btn-fefault cart" onClick={XuLyAddCart}>
                             <i className="fa fa-shopping-cart" />
                             Add to cart
                             </button>
