@@ -20,6 +20,7 @@ import EditProduct from './components/Product/EditProduct';
 import DeleteProduct from './components/Product/DeleteProduct';
 import Home from './components/Member/Home';
 import ProductDetail from './components/Product/ProductDetail';
+import Cart from './components/Product/Cart';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -39,6 +40,8 @@ root.render(
             <Route path="/account/DeleteProduct/:id" element={<DeleteProduct/>}/>
             <Route path="/home" element={<Home/>}/>
             <Route path="/product/detail/:id" element={<ProductDetail/>}/>
+            <Route path="/cart" element={<Cart/>}/>
+
           </Routes>
        </App>
     </Router>

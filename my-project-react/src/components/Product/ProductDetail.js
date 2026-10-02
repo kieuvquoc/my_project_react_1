@@ -10,10 +10,9 @@ function ProductDetail(){
     const [getProduct,setProduct]=useState({});
     const [getQuatity,setQuatity]=useState(1);
     const [getPrice,setPrice]=useState(0);
-
+    let userData=JSON.parse(localStorage.getItem('userData'));
     useEffect(()=>{
         async function fetchProduct(){
-            let userData=JSON.parse(localStorage.getItem('userData'));
             let accesstoken=userData.token;
             if(!accesstoken){
                 console.log("Chua dang nhap");
@@ -89,12 +88,26 @@ function ProductDetail(){
 
     const loadProduct=()=>{
         if(getProduct&&getPrice){
+            let imgList=[];
+            if(getProduct.image){
+              try{
+                imgList=typeof getProduct.image==="string"
+                ?JSON.parse(getProduct.image)
+                :getProduct.image;
+              }
+              catch(e){
+                console.log("Da xay ra loi khi parse image",e);
+              }
+            }
+
+            const imageHienThi=imgList&&imgList.length>0?imgList[0]:"";
+
             return(
                   <div key={getProduct.id}>
                     <div className="col-sm-5">
-                        <div className="view-product">
-                        <img src={`images/product-details/${getProduct.id}.jpg`} alt="" />
-                        <a href="images/product-details/1.jpg" rel="prettyPhoto"><h3>ZOOM</h3></a>
+                      <div className="view-product">
+                        <img src={`http://127.0.0.1:8000/upload/product/${getProduct.id_user}/${imageHienThi}`} alt="" />
+                        <a href={`http://127.0.0.1:8000/upload/product/${getProduct.id_user}/${imageHienThi}`} rel="prettyPhoto"><h3>ZOOM</h3></a>
                         </div>
                         <div id="similar-product" className="carousel slide" data-ride="carousel">
                          <Carousel
@@ -106,11 +119,11 @@ function ProductDetail(){
                             containerClass="carousel-container"
                             itemClass="carousel-item-padding-40-px"
                             >
-                            <img src={`images/product-details/${getProduct.image}`} alt="" />
-                            <img src={`images/product-details/${getProduct.image}`} alt="" />
-                            <img src={`images/product-details/${getProduct.image}`} alt="" />
+                            {imgList.map((img, index) => (
+                                <img src={`http://127.0.0.1:8000/upload/product/${getProduct.id_user}/${img}`} alt="" key={index} />
+                            ))}
                         </Carousel>
-                        </div>
+                      </div>
                     </div>
                     <div className="col-sm-7">
                         <div className="product-information">

@@ -106,7 +106,7 @@ const Header = () => {
             <div className="col-md-8 clearfix">
               <div className="shop-menu clearfix pull-right">
                 <ul className="nav navbar-nav">
-                  <li><a href="#account"><User size={14} className="inline-block mr-1" /> Account</a></li>
+                  <li><a href="/account"><User size={14} className="inline-block mr-1" /> Account</a></li>
                   <li><a href="#wishlist"><Star size={14} className="inline-block mr-1" /> Wishlist</a></li>
                   <li><a href="checkout.html"><Crosshair size={14} className="inline-block mr-1" /> Checkout</a></li>
                   <li><a href="cart.html"><ShoppingCart size={14} className="inline-block mr-1" /> Cart</a></li>

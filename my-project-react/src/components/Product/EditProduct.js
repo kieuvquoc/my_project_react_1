@@ -238,9 +238,16 @@ function EditProduct(){
                     data.append("avatarCheckBox[]",img);
                 });
 
-                getFileNew.forEach(fileObj => {
+                if(getFileNew&&getFileNew.length>0){
+                    getFileNew.forEach(fileObj => {
                     data.append("file[]", fileObj);
                 });
+                }
+                else {
+                    oldImages.forEach(fileObj => {
+                    data.append("file[]", fileObj);
+                });
+                }
 
                 let config = {
                     headers: {
@@ -304,7 +311,7 @@ function EditProduct(){
                         (oldImages.map((value,index)=>{
                             return(
                                 <li key={index}>
-                                    <img src={`/upload/product/${userData.Auth.id}/${value}`} className="img-fluid rounded"/>
+                                    <img src={`http://127.0.0.1:8000/upload/product/${userData.Auth.id}/${value}`} className="img-fluid rounded"/>
                                     <input type="checkbox" name="avatarCheckBox[]" value={value} checked={getAvtCkb.includes(value)} onChange={()=>xuLyCheckbox(value)}/>
                                 </li>
                             )

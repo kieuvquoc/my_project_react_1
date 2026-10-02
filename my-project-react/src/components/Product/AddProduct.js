@@ -10,7 +10,7 @@ function AddProduct(){
         price:"",
         category:"",
         brand:"",
-        status:1,
+        status:0,
         sale:0,
         company:"",
         avatar:[],
@@ -21,11 +21,11 @@ function AddProduct(){
     const [getStatus,setStatus]=useState([
         {
             id:0,
-            status:"sale"
+            status:"new"
         },
         {
             id:1,
-            status:"new"
+            status:"sale"
         }
     ])
     const [getErrors,setErrors]=useState({});
@@ -100,13 +100,35 @@ function AddProduct(){
         value = Number(value);
         }
 
+        if(name=="sale"){
+            if(value==""){
+                console.log("Chua nhap sale");
+                return;
+            }
+            value=parseInt(value);
+            if(value<0||isNaN(value)){
+                setInputs({...getInputs, sale: 0});
+            }
+            else {
+                setInputs({...getInputs, sale: value});
+            }
+        }
         setInputs(state=>({...state,[name]:value}));
     }
     function ReaderFiles(e){
-        let files=e.target.files;
+        let files=Array.from(e.target.files);
         if (files.length === 0) return;
+        if(getInputs.avatar.length+files.length>3){
+            setErrors({...getErrors, avatar:"Chỉ được upload tối đa 3 hình ảnh"});
+            e.target.value="";
+        } 
+        else {
+            setErrors({...getErrors, avatar:""});
+            let currentFiles=[...getInputs.avatar,...files];
+            setInputs(state=>({...state,avatar:currentFiles}));
+            e.target.value="";
+        }
 
-        setInputs(state => ({ ...state, avatar: Array.from(files) }));
     }
     async function kiemtraForm(e){
         e.preventDefault();
@@ -129,7 +151,7 @@ function AddProduct(){
             kiemtra=false;
             setLois.brand="Chua chon nhan hang"
         }
-        if (Number(getInputs.status) === 0) {
+        if (Number(getInputs.status) === 1) {
             if (!getInputs.sale || Number(getInputs.sale) <= 0 || Number(getInputs.sale) >= 100) {
                 kiemtra = false;
                 setLois.sale = "Vui lòng nhập % giảm giá hợp lệ (1 - 99%)";
@@ -142,9 +164,6 @@ function AddProduct(){
         if(!getInputs.avatar || getInputs.avatar.length === 0){
             kiemtra=false;
             setLois.avatar="Chua chon avatar"
-        } else if (getInputs.avatar.length > 3) {
-            kiemtra = false;
-            setLois.avatar = "Chỉ được upload tối đa 3 hình ảnh";
         } else {
             for (let file of getInputs.avatar) {
                 let size = file.size;
@@ -176,7 +195,7 @@ function AddProduct(){
             let data=new FormData();
 
             let tinhSale=Number(getInputs.price);
-            if(getInputs.status==0){
+            if(getInputs.status==1){
                 tinhSale=tinhSale*(1-getInputs.sale/100);
             }
 
@@ -187,12 +206,12 @@ function AddProduct(){
             data.append("category",getInputs.category);
             data.append("brand",getInputs.brand);
 
-            if(Number(getInputs.status)!==0){
+            if(Number(getInputs.status)!==1){
                 data.append("sale",0);
             }
             else data.append("sale",getInputs.sale)
 
-            data.append("state",getInputs.status);
+            data.append("status",getInputs.status);
             data.append("company",getInputs.company);
             data.append("detail",getInputs.detail);
 
@@ -215,6 +234,7 @@ function AddProduct(){
                 let res=await Api.post(`api/user/product/add`, data, config )
                 if(res.data.errors){
                     console.log("Da xay ra loi", res.data.errors);
+                    setErrors(res.data.errors);
                 }
                 else {
                     alert("Add product thanh cong");
@@ -249,7 +269,7 @@ function AddProduct(){
             </select>
             <p>{getErrors.status}</p>
             {
-                Number(getInputs.status)===0 && (
+                Number(getInputs.status)===1 && (
                     <>
                         <input type="number" name="sale" value={getInputs.sale} onChange={kiemtraInput}/>
                         <span>%</span>
@@ -259,7 +279,7 @@ function AddProduct(){
             }
             <input type="text" name="company" value={getInputs.company} onChange={kiemtraInput} placeholder="Company profile"/>
             <p>{getErrors.company}</p>
-            <input type="file" name="avatar" multiple onChange={ReaderFiles}/>
+            <input type="file" name="avatar" accept="image/*" multiple onChange={ReaderFiles}/>
             <p>{getErrors.avatar}</p>
             <textarea type="text" name="detail" value={getInputs.detail} onChange={kiemtraInput} placeholder="Detail"/>
             <p>{getErrors.detail}</p>
