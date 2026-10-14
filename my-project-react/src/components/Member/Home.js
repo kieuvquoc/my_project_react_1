@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
 import Api from '../Api/Api';
 
 function Home() {
     const [getProducts, setProducts] = useState([]);
+    let navigate = useNavigate();
 
     useEffect(() => {
         async function fetchProducts() {
@@ -22,7 +23,7 @@ function Home() {
     const handleAddToCart = (e, productId) => {
         e.preventDefault();
 
-        let cart = {};
+        let cart = JSON.parse(localStorage.getItem("cart")) || {};
 
         if (cart[productId]) {
         cart[productId] += 1;
@@ -32,6 +33,7 @@ function Home() {
 
         localStorage.setItem("cart", JSON.stringify(cart));
         alert("Da them san pham vao");
+        navigate("/cart");
     };
 
     const renderProducts = () => {
@@ -72,7 +74,7 @@ function Home() {
                         <div className="overlay-content">
                         <h2>${product.price}</h2>
                         <p>{product.name}</p>
-                        <button onClick={(e) => handleAddToCart(e, product.id)}
+                        <button  onClick={(e) => handleAddToCart(e, product.id)}
                             className="btn btn-default add-to-cart"><i className="fa fa-shopping-cart" /> Add to cart
                         </button>
                         <Link to={`/product/detail/${product.id}`} className="btn btn-default add-to-cart"

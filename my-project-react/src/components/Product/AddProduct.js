@@ -225,13 +225,12 @@ function AddProduct(){
             let config={
                 headers: {
                     'Authorization': 'Bearer ' + accessToken,
-                              'Content-Type': 'multipart/form-data',
                               'Accept': 'application/json'
                 }
             }
 
             try{
-                let res=await Api.post(`api/user/product/add`, data, config )
+                let res=await Api.post(`api/user/product/add`, data, config );
                 if(res.data.errors){
                     console.log("Da xay ra loi", res.data.errors);
                     setErrors(res.data.errors);
@@ -245,6 +244,10 @@ function AddProduct(){
             }
             catch(e){
                 console.log("Da xay ra loi khi add product",e);
+
+                console.log("STATUS:", e.response?.status);
+                console.log("DATA:", e.response?.data);
+                console.log("HEADERS:", e.response?.headers);
             }
         }
     }

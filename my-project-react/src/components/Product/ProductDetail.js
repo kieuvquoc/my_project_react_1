@@ -10,6 +10,9 @@ function ProductDetail(){
     const [getProduct,setProduct]=useState({});
     const [getQuatity,setQuatity]=useState(1);
     const [getPrice,setPrice]=useState(0);
+
+    const [selectedImage,setSelectedImage]=useState(0);
+
     let userData=JSON.parse(localStorage.getItem('userData'));
     useEffect(()=>{
         async function fetchProduct(){
@@ -24,6 +27,15 @@ function ProductDetail(){
                 if(res.data.response){
                     setProduct(res.data.data);
                     setPrice(res.data.data.price);
+                  let imgList=[];
+                  if(res.data.data.image){
+                    imgList=typeof res.data.data.image=='string'
+                    ?JSON.parse(res.data.data.image)
+                    :res.data.data.image;
+                  }
+                  if (imgList && imgList.length > 0) {
+                  setSelectedImage(imgList[0]);
+                }
                 }
             }
             catch(e){
@@ -35,10 +47,10 @@ function ProductDetail(){
 
         const responsive = {
         desktop: {
-        breakpoint: { max: 3000, min: 1024 },
-        items: 3,
-        slidesToSlide: 1
-        }
+          breakpoint: { max: 3000, min: 1024 },
+          items: 3,
+          slidesToSlide: 1
+          },
     };
 
     function ChangeSoLuongCart(e){
@@ -82,10 +94,38 @@ function ProductDetail(){
         setQuatity(cart[id]);
         setPrice(price*cart[id])
       }
+
       localStorage.setItem("cart",JSON.stringify(cart));
+      navigate("/cart");
       alert("Da them san pham thanh cong");
     }
 
+    function selectIMG(e){
+      if (e) e.preventDefault();
+      if (!getProduct.image) return;
+      let name=e.target.name;
+      if(getProduct){
+        if(getProduct.image){
+          let imgList=typeof getProduct.image=='string'
+          ?JSON.parse(getProduct.image)
+          :getProduct.image;
+          if (!imgList || imgList.length === 0) return;
+
+          let anhHienTai=imgList.indexOf(selectedImage);
+          
+          if(anhHienTai===-1) anhHienTai=0;
+
+          let anhDuocChon;
+          if(name=="prev"){
+                anhDuocChon=anhHienTai>0?imgList[anhHienTai-1]:imgList[imgList.length-1];
+            }
+          if(name=="next"){
+              anhDuocChon=anhHienTai<imgList.length-1?imgList[anhHienTai+1]:imgList[0];
+            }
+          setSelectedImage(imgList[anhDuocChon]);
+      }
+    }
+  }
     const loadProduct=()=>{
         if(getProduct&&getPrice){
             let imgList=[];
@@ -100,7 +140,7 @@ function ProductDetail(){
               }
             }
 
-            const imageHienThi=imgList&&imgList.length>0?imgList[0]:"";
+            const imageHienThi=selectedImage|| (imgList&&imgList.length>0?imgList[0]:"");
 
             return(
                   <div key={getProduct.id}>
@@ -112,7 +152,7 @@ function ProductDetail(){
                         <div id="similar-product" className="carousel slide" data-ride="carousel">
                          <Carousel
                             responsive={responsive}
-                            arrows={true}
+                            arrows={false}
                             infinite={true}
                             autoPlay={false}
                             showDots={false}
@@ -120,9 +160,17 @@ function ProductDetail(){
                             itemClass="carousel-item-padding-40-px"
                             >
                             {imgList.map((img, index) => (
-                                <img src={`http://127.0.0.1:8000/upload/product/${getProduct.id_user}/${img}`} alt="" key={index} />
+                              <div key={index}>
+                                <img width="100px" src={`http://127.0.0.1:8000/upload/product/${getProduct.id_user}/${img}`} onClick={()=>setSelectedImage(img)} alt="" key={index} />
+                              </div>
                             ))}
                         </Carousel>
+                              <a className="left item-control" name="prev" onClick={selectIMG} >
+                                  <i className="fa fa-angle-left"></i>
+                              </a>
+                              <a className="right item-control" name="next" onClick={selectIMG} >
+                                  <i className="fa fa-angle-right"></i>
+                              </a>
                       </div>
                     </div>
                     <div className="col-sm-7">
