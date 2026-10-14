@@ -15,10 +15,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Api\productAddRequest;
 use App\Http\Requests\Api\productEditRequest;
 class ProductController extends Controller
-{ 
+{
     public $successStatus = 200;
-    
-    // 
+
+    //
     public function productHome(){
         $getProductHome = Product::orderBy('id')->limit(6)->get()->toArray();
         return response()->json([
@@ -26,9 +26,9 @@ class ProductController extends Controller
             'data' => $getProductHome
         ], $this->successStatus);
     }
-    // 
+    //
     public function productWishlist() {
-        
+
         $getAllProduct = Product::all()->toArray();
         return response()->json([
             'response' => 'success',
@@ -41,23 +41,45 @@ class ProductController extends Controller
         return response()->json([
             'response' => 'success',
             'data' => $getAllProduct
-        ], $this->successStatus); 
+        ], $this->successStatus);
     }
     // product cart
     public function productCart(Request $request) {
-        
         $data = $request->json()->all();
-        
         $getProduct = [];
-        foreach ($data as $key => $value) {
-            $get = Product::findOrFail($key)->toArray();
-            $get['qty'] = $value;
-            $getProduct[] = $get;
+
+        if (!empty($data)) {
+            // Kiểm tra xem $data là mảng (Array) hay object/associative array
+            // Nếu là mảng các object [{id: 13, qty: 2}, ...]
+            if (array_keys($data) === range(0, count($data) - 1)) {
+                foreach ($data as $item) {
+                    if (isset($item['id'])) {
+                        $product = Product::find($item['id']);
+                        if ($product) {
+                            $get = $product->toArray();
+                            $get['qty'] = $item['qty'] ?? 1;
+                            $getProduct[] = $get;
+                        }
+                    }
+                }
+            }
+            // Nếu là dạng Object { "13": 4 }
+            else {
+                foreach ($data as $key => $value) {
+                    $product = Product::find($key);
+                    if ($product) {
+                        $get = $product->toArray();
+                        $get['qty'] = $value;
+                        $getProduct[] = $get;
+                    }
+                }
+            }
         }
+
         return response()->json([
             'response' => 'success',
             'data' => $getProduct
-        ], $this->successStatus);
+        ], $this->successStatus ?? 200);
     }
 
     public function myProduct(){
@@ -66,7 +88,7 @@ class ProductController extends Controller
             'response' => 'success',
             'data' => $getAllProductUser
         ], $this->successStatus);
-       
+
     }
     /**
      * Display a listing of the resource.
@@ -78,7 +100,7 @@ class ProductController extends Controller
         $getAllProduct = Product::all()->toArray();
         return view('admin.product.list', compact('getAllProduct'));
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -92,7 +114,7 @@ class ProductController extends Controller
             'response' => 'success',
             'data' => $data
         ], $this->successStatus);
-       
+
     }
     /**
      * Display the specified resource.
@@ -108,7 +130,7 @@ class ProductController extends Controller
             'response' => 'success',
             'data' => $data
         ], $this->successStatus);
-       
+
     }
 
     /**
@@ -119,12 +141,12 @@ class ProductController extends Controller
      */
     public function activeProduct($id)
     {
-        
+
         $activeProduct = Product::find($id);
         $activeProduct->active = 1;
         $activeProduct->save();
         return redirect('/admin/product/list')->with('updated','Active product successfully.');
-        
+
     }
 
     /**
@@ -136,10 +158,10 @@ class ProductController extends Controller
      */
     public function deleteProduct($id)
     {
-       
+
         $getProduct = Product::find($id)->toArray();
         $arrImage = json_decode($getProduct['image'], true);
-        
+
         if (Product::find($id)->delete()) {
             foreach ($arrImage as $value) {
                 if (file_exists('upload/product/'.Auth::user()->id.'/'.$value)) {
@@ -149,7 +171,7 @@ class ProductController extends Controller
                     unlink('upload/product/'.Auth::user()->id.'/larger_'.$value);
                 }
             }
-  
+
             $getAllProductUser = Product::all()->where('id_user', Auth::user()->id)->toArray();
             return response()->json([
                 'response' => 'success',
@@ -180,18 +202,18 @@ class ProductController extends Controller
             'brand' => $Brand
         ], JsonResponse::HTTP_OK);
     }
-    
+
     // create product
     public function store(productAddRequest $request) {
         $data = $request->all();
-        
+
         if($request->hasfile('file')){
-            $imageUpload = $this->uploadImageToDirectory($request->file('file')); 
-            $data['image']= json_encode($imageUpload); 
+            $imageUpload = $this->uploadImageToDirectory($request->file('file'));
+            $data['image']= json_encode($imageUpload);
         }
-       
-       
-        
+
+
+
         $data['id_category'] = $data['category'];
         $data['id_brand'] = $data['brand'];
         $data['company_profile'] = $data['company'];
@@ -199,7 +221,7 @@ class ProductController extends Controller
 
         if ($product = Product::create($data)) {
             // if($request->hasfile('file')){
-            //     $this->uploadImageToDirectory($request->file('file'));  
+            //     $this->uploadImageToDirectory($request->file('file'));
             // }
             return response()->json([
                 'response' => 'success',
@@ -213,7 +235,7 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
         $data = $request->all();
-        
+
         // get json image convert to array and check remove
         $imageProduct = json_decode($product['image'], true);
         if(!empty($data['avatarCheckBox'])) {
@@ -228,29 +250,29 @@ class ProductController extends Controller
 
                     unset($imageProduct[$key]);
                 }
-            } 
+            }
             $imageProduct = array_values($imageProduct);
         }
-       
+
         // get name upload file and merge with avatar old
         $imageMerge = !empty($imageProduct) ? $imageProduct : '';
-       
-        
+
+
         if($request->hasfile('file')){
-            $imageUpload = $this->uploadImageToDirectory($request->file('file'));  
+            $imageUpload = $this->uploadImageToDirectory($request->file('file'));
             $imageMerge = array_merge($imageUpload, $imageProduct);
-        } 
-        // 
+        }
+        //
 
         if(count($imageMerge) > 5) {
             return response()->json([
                 'message' => 'avatar only upload maximun 5 file',
             ], $this->successStatus);
-        }    
-       
+        }
+
 
         $data = $request->all();
-        
+
         $data['image'] = json_encode($imageMerge);
         $data['id_category'] = $data['category'];
         $data['id_brand'] = $data['brand'];
@@ -260,7 +282,7 @@ class ProductController extends Controller
         if ($product->update($data)) {
             // save image in folder
             if($request->hasfile('file')){
-                $imageUpload = $this->uploadImageToDirectory($request->file('file'));  
+                $imageUpload = $this->uploadImageToDirectory($request->file('file'));
             }
 
             return response()->json([
@@ -269,8 +291,8 @@ class ProductController extends Controller
             ], $this->successStatus);
         }
     }
- 
-   
+
+
     public function uploadImageToDirectory($arrImage)
     {
         $ImageUpload = [];

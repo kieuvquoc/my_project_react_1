@@ -33,17 +33,17 @@ Route::group([
     // product
     Route::get('/product',[ProductController::class, 'productHome']);
     Route::get('/product/list',[ProductController::class, 'productList']);
-   
+
     Route::get('/product/wishlist',[ProductController::class, 'productWishlist']);
     Route::get('/product/detail/{id}',[ProductController::class, 'detail']);
     Route::post('/product/cart',[ProductController::class, 'productCart']);
-    
+
 
     // middleware
     // Route::group(['middleware' => 'auth:api'], function(){
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/user/update/{id}',[MemberController::class, 'update']);
-        
+
         Route::get('/user/my-product',[ProductController::class, 'myProduct']);
         Route::post('/user/product/add',[ProductController::class, 'store']);
         Route::get('/user/product/{id}',[ProductController::class, 'show']);
@@ -51,19 +51,19 @@ Route::group([
         Route::get('/user/product/delete/{id}',[ProductController::class, 'deleteProduct']);
         Route::post('/blog/comment/{id}',[BlogController::class, 'comment']);
         Route::post('/blog/rate/{id}',[BlogController::class, 'rate']);
-        
+
 
     });
-    // // 
+    // //
     Route::get('/blog/rate/{id}',[BlogController::class, 'rateBlog']);
     Route::get('/category-brand',[ProductController::class, 'listCategoryBrand']);
-   
+
 
     //Blog Api
     // http:://..../api/blog
     Route::get('/blog',[BlogController::class, 'list']);
     Route::get('/blog/detail/{id}',[BlogController::class, 'show']);
-    
+
     Route::get('/blog/detail-pagination/{id}',[BlogController::class, 'pagingBlogDetail']);
 
 
