@@ -13,9 +13,11 @@ import {useNavigate, Link} from 'react-router-dom';
 // Import các icon mạng xã hội từ react-icons/fa (FontAwesome)
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaDribbble } from 'react-icons/fa';
 import { useCart } from '../Product/ContextCart';
+import { useWishList } from '../Product/ContextWishList';
 
 const Header = () => {
   let {tongCart} = useCart();
+  let {tongWishList}=useWishList();
 
   let kiemtra=localStorage.getItem('loginUser');
   let Navigate=useNavigate();
@@ -109,7 +111,19 @@ const Header = () => {
               <div className="shop-menu clearfix pull-right">
                 <ul className="nav navbar-nav">
                   <li><a href="/account"><User size={14} className="inline-block mr-1" /> Account</a></li>
-                  <li><a href="/wishlist"><Star size={14} className="inline-block mr-1" /> Wishlist</a></li>
+                  {(tongWishList>0)?(
+                      <li>
+                        <a href="/wishlist">
+                        <Star size={14} className="inline-block mr-1" /> Wishlist <h3>({tongWishList})</h3>
+                        </a>
+                      </li>
+                  ):(
+                      <li>
+                        <a href="/wishlist">
+                        <Star size={14} className="inline-block mr-1" /> Wishlist
+                        </a>
+                      </li>
+                  )}
                   <li><a href="checkout.html"><Crosshair size={14} className="inline-block mr-1" /> Checkout</a></li>
                   {(tongCart > 0) ? (
                     <li>

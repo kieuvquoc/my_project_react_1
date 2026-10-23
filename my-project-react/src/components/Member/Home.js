@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { Link , useNavigate } from 'react-router-dom';
 import Api from '../Api/Api';
 import { useCart } from '../Product/ContextCart';
+import { useWishList} from '../Product/ContextWishList';
 
 
 function Home() {
     let {themCart} = useCart();
+    let { getItemWL, clickWishList } = useWishList();
     const [getProducts, setProducts] = useState([]);
     let navigate = useNavigate();
     
@@ -30,6 +32,17 @@ function Home() {
 
         alert("Da them san pham vao");
         navigate("/cart");
+    };
+
+    const handleAddtoWishList = (e, productId)=>{
+        e.preventDefault();
+
+        clickWishList(productId);
+        if (getItemWL.includes(productId)) {
+            alert("Đã xóa sản phẩm khỏi mục yêu thích!");
+        } else {
+            alert("Đã thêm sản phẩm vào mục yêu thích!");
+        }
     };
 
     const renderProducts = () => {
@@ -83,7 +96,7 @@ function Home() {
                     <div className="choose">
                     <ul className="nav nav-pills nav-justified">
                         <li>
-                            <a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a>
+                            <a href="#" onClick={(e) => handleAddtoWishList(e, product.id)}><i className="fa fa-plus-square"></i>Add to wishlist</a>
                         </li>
                         <li>
                         <a href="#!"><i className="fa fa-plus-square" /> Add to compare</a>

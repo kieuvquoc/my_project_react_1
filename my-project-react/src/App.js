@@ -6,35 +6,38 @@ import MenuLeft from './components/Layout/MenuLeft';
 import MenuAcc from './components/Layout/MenuAcc';
 import { useLocation, Link } from 'react-router-dom';
 import { ContextProvider } from './components/Product/ContextCart';
+import { ContextWishList } from './components/Product/ContextWishList';
 
 function App(props) {
   let location = useLocation();
   return (
       <ContextProvider>
-        <Header/>
-        <section>
-          <div className="container">
-            <div className="row">
-              {location.pathname === '/cart'||location.pathname === '/wishlist' ?
-              (
-                <div className="col-sm-9">
-                {props.children}
-                </div>
-              ):
-              (
-                <>
-                  <div className="col-sm-3">
-                    {location.pathname.startsWith('/account') ? <MenuAcc/> : <MenuLeft/>}
-                  </div>
+        <ContextWishList>
+          <Header/>
+          <section>
+            <div className="container">
+              <div className="row">
+                {location.pathname === '/cart'||location.pathname === '/wishlist' ?
+                (
                   <div className="col-sm-9">
-                    {props.children}
+                  {props.children}
                   </div>
-                </>
-              )}
+                ):
+                (
+                  <>
+                    <div className="col-sm-3">
+                      {location.pathname.startsWith('/account') ? <MenuAcc/> : <MenuLeft/>}
+                    </div>
+                    <div className="col-sm-9">
+                      {props.children}
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-        </section>
-        <Footer/>
+          </section>
+          <Footer/>
+        </ContextWishList>
       </ContextProvider>
   );
 }
