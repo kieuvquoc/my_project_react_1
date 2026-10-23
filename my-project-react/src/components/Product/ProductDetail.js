@@ -3,8 +3,10 @@ import {useParams,useNavigate} from 'react-router-dom';
 import Api from '../Api/Api';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { useCart } from '../Product/ContextCart';
 
 function ProductDetail(){
+    const themCart = useCart();
     let {id}=useParams();
     let navigate=useNavigate();
     const [getProduct,setProduct]=useState({});

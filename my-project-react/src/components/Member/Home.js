@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Link , useNavigate } from 'react-router-dom';
 import Api from '../Api/Api';
+import { useCart } from '../Product/ContextCart';
+
 
 function Home() {
+    let {themCart} = useCart();
     const [getProducts, setProducts] = useState([]);
     let navigate = useNavigate();
-
+    
     useEffect(() => {
         async function fetchProducts() {
         try {
@@ -23,15 +26,8 @@ function Home() {
     const handleAddToCart = (e, productId) => {
         e.preventDefault();
 
-        let cart = JSON.parse(localStorage.getItem("cart")) || {};
+        themCart(productId);
 
-        if (cart[productId]) {
-        cart[productId] += 1;
-        } else {
-        cart[productId] = 1;
-        }
-
-        localStorage.setItem("cart", JSON.stringify(cart));
         alert("Da them san pham vao");
         navigate("/cart");
     };
@@ -65,7 +61,7 @@ function Home() {
                         style={{ height: '250px', objectFit: 'cover' }}/>
                         <h2>${product.price}</h2>
                         <p>{product.name}</p>
-                        <button onClick={(e) => handleAddToCart(e, product.id)} className="btn btn-default add-to-cart">
+                        <button onClick={(e) => handleAddToCart(e, product)} className="btn btn-default add-to-cart">
                         <i className="fa fa-shopping-cart" /> Add to cart
                         </button>
                     </div>
@@ -74,7 +70,7 @@ function Home() {
                         <div className="overlay-content">
                         <h2>${product.price}</h2>
                         <p>{product.name}</p>
-                        <button  onClick={(e) => handleAddToCart(e, product.id)}
+                        <button  onClick={(e) => handleAddToCart(e, product)}
                             className="btn btn-default add-to-cart"><i className="fa fa-shopping-cart" /> Add to cart
                         </button>
                         <Link to={`/product/detail/${product.id}`} className="btn btn-default add-to-cart"
@@ -87,9 +83,7 @@ function Home() {
                     <div className="choose">
                     <ul className="nav nav-pills nav-justified">
                         <li>
-                        <Link to={`/product/detail/${product.id}`}>
-                            <i className="fa fa-plus-square" /> More detail
-                        </Link>
+                            <a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a>
                         </li>
                         <li>
                         <a href="#!"><i className="fa fa-plus-square" /> Add to compare</a>

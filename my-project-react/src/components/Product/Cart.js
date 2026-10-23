@@ -1,11 +1,12 @@
 import React, {useState,useEffect} from 'react';
 import Api from '../Api/Api';
 import { useNavigate} from 'react-router-dom';
+import {useCart} from './ContextCart';
 
-function Cart(){
+function Cart({product}){
     const navigate = useNavigate();
 
-    const [getItemCart, setItemCart] = useState([]);
+    const {getItemCart, setItemCart, xoaCart, tangCart, giamCart}=useCart();
 
       useEffect(()=>{
           async function updateCart(){
@@ -40,44 +41,21 @@ function Cart(){
     function buttonTang(e,id){
         e.preventDefault()
 
-        let updataList=getItemCart.map((item)=>{
-            if(item.id===id){
-                return ({...item, qty: item.qty + 1});
-            }
-            return item;
-        })
-        setItemCart(updataList);
-        localStorage.setItem("cart", JSON.stringify(updataList));
+        tangCart(id);
     }
 
     function buttonGiam(e,id){
         e.preventDefault();
 
-        let updataList=getItemCart.map((item)=>{
-            if(item.id===id){
-                if (item.qty > 1){
-                    return ({...item, qty: item.qty - 1}); 
-                }
-            }
-            return item;
-        })
-        setItemCart(updataList);
-        localStorage.setItem("cart", JSON.stringify(updataList));
+        giamCart(id);
 
     }
 
     function buttonXoa(e,id){
         e.preventDefault();
 
-        let updateList=getItemCart.filter((item)=>item.id!==id);
-        setItemCart(updateList);
-
-        if(updateList.length===0){
-            localStorage.removeItem("cart");
-        } else{
-            localStorage.setItem("cart", JSON.stringify(updateList));
-            alert("Da xoa san pham khoi gio hang");
-        }
+        xoaCart(id);
+        alert("Da xoa san pham khoi gio hang");
     }
 
 

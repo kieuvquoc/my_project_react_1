@@ -12,9 +12,11 @@ import {
 import {useNavigate, Link} from 'react-router-dom';
 // Import các icon mạng xã hội từ react-icons/fa (FontAwesome)
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaDribbble } from 'react-icons/fa';
-
+import { useCart } from '../Product/ContextCart';
 
 const Header = () => {
+  let {tongCart} = useCart();
+
   let kiemtra=localStorage.getItem('loginUser');
   let Navigate=useNavigate();
   function logout(e){
@@ -107,9 +109,17 @@ const Header = () => {
               <div className="shop-menu clearfix pull-right">
                 <ul className="nav navbar-nav">
                   <li><a href="/account"><User size={14} className="inline-block mr-1" /> Account</a></li>
-                  <li><a href="#wishlist"><Star size={14} className="inline-block mr-1" /> Wishlist</a></li>
+                  <li><a href="/wishlist"><Star size={14} className="inline-block mr-1" /> Wishlist</a></li>
                   <li><a href="checkout.html"><Crosshair size={14} className="inline-block mr-1" /> Checkout</a></li>
-                  <li><a href="cart.html"><ShoppingCart size={14} className="inline-block mr-1" /> Cart</a></li>
+                  {(tongCart > 0) ? (
+                    <li>
+                      <a href="/cart">
+                        <ShoppingCart size={14} className="inline-block mr-1" /> Cart <h3>({tongCart})</h3>
+                      </a>
+                    </li>
+                  ) : (
+                    <li><a href="cart.html"><ShoppingCart size={14} className="inline-block mr-1" /> Cart</a></li>
+                  )}
                   <li><a href="login.html"><Lock size={14} className="inline-block mr-1" /> Login</a></li>
                   {kiemtralogin()}
                 </ul>
@@ -139,11 +149,11 @@ const Header = () => {
                   <li className="dropdown">
                     <a href="#shop">Shop <ChevronDown size={14} className="inline-block" /></a>
                     <ul role="menu" className="sub-menu">
-                      <li><a href="shop.html">Products</a></li>
-                      <li><a href="product-details.html">Product Details</a></li> 
-                      <li><a href="checkout.html">Checkout</a></li> 
-                      <li><a href="cart.html">Cart</a></li> 
-                      <li><a href="login.html">Login</a></li> 
+                      <li><a href="/account/myproduct">Products</a></li>
+                      <li><a href="/product/detail/">Product Details</a></li> 
+                      <li><a href="/checkout">Checkout</a></li> 
+                      <li><a href="/cart">Cart</a></li> 
+                      <li><a href="/login">Login</a></li> 
                     </ul>
                   </li> 
                   <li className="dropdown">
