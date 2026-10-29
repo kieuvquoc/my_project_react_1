@@ -1,8 +1,8 @@
 import {useState,useEffect} from 'react';
 import {Link,useNavigate} from 'react-router-dom';
 import Api from '../Api/Api';
-import { useCart } from './ContextCart';
-import { useWishList } from './ContextWishList';
+import { useCart } from './Context/ContextCart';
+import { useWishList } from './Context/ContextWishList';
 
 
 function WishList(){

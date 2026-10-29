@@ -3,7 +3,7 @@ import {useParams,useNavigate} from 'react-router-dom';
 import Api from '../Api/Api';
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { useCart } from '../Product/ContextCart';
+import { useCart } from '../Product/Context/ContextCart';
 
 function ProductDetail(){
     const themCart = useCart();

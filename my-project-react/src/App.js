@@ -5,8 +5,8 @@ import Footer from './components/Layout/Footer';
 import MenuLeft from './components/Layout/MenuLeft';
 import MenuAcc from './components/Layout/MenuAcc';
 import { useLocation, Link } from 'react-router-dom';
-import { ContextProvider } from './components/Product/ContextCart';
-import { ContextWishList } from './components/Product/ContextWishList';
+import { ContextProvider } from './components/Product/Context/ContextCart';
+import { ContextWishList } from './components/Product/Context/ContextWishList';
 
 function App(props) {
   let location = useLocation();

@@ -6,6 +6,9 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import {Provider} from 'react-redux';
+import Store from './components/Product/ReduxAction/StoreAction';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Blog from './components/Blog/Blog';
@@ -27,25 +30,27 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
-       <App>
-          <Routes>
-            <Route path="/blog" element={<Blog/>}/>
-            <Route path="/blog/detail/:id" element={<BlogDetail/>}/>
-            <Route path="/register" element={<Register/>}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/comment" element={<Comment/>}/>
-            <Route path="/account/update" element={<Update/>}/>
-            <Route path="/account/myproduct" element={<MyProduct/>}/>
-            <Route path="/account/addproduct" element={<AddProduct/>}/>
-            <Route path="/account/editproduct/:id" element={<EditProduct/>}/>
-            <Route path="/account/DeleteProduct/:id" element={<DeleteProduct/>}/>
-            <Route path="/home" element={<Home/>}/>
-            <Route path="/product/detail/:id" element={<ProductDetail/>}/>
-            <Route path="/cart" element={<Cart/>}/>
-            <Route path="/wishlist" element={<WishList/>}/>
+       <Provider store={Store}>
+        <App>
+            <Routes>
+              <Route path="/blog" element={<Blog/>}/>
+              <Route path="/blog/detail/:id" element={<BlogDetail/>}/>
+              <Route path="/register" element={<Register/>}/>
+              <Route path="/login" element={<Login/>}/>
+              <Route path="/comment" element={<Comment/>}/>
+              <Route path="/account/update" element={<Update/>}/>
+              <Route path="/account/myproduct" element={<MyProduct/>}/>
+              <Route path="/account/addproduct" element={<AddProduct/>}/>
+              <Route path="/account/editproduct/:id" element={<EditProduct/>}/>
+              <Route path="/account/DeleteProduct/:id" element={<DeleteProduct/>}/>
+              <Route path="/home" element={<Home/>}/>
+              <Route path="/product/detail/:id" element={<ProductDetail/>}/>
+              <Route path="/cart" element={<Cart/>}/>
+              <Route path="/wishlist" element={<WishList/>}/>
 
-          </Routes>
-       </App>
+            </Routes>
+        </App>
+       </Provider>
     </Router>
   </React.StrictMode>
 );

@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Link , useNavigate } from 'react-router-dom';
 import Api from '../Api/Api';
-import { useCart } from '../Product/ContextCart';
-import { useWishList} from '../Product/ContextWishList';
-
+import { useCart } from '../Product/Context/ContextCart';
+import { useWishList} from '../Product/Context/ContextWishList';
+import {useDispatch} from 'react-redux';
 
 function Home() {
     let {themCart} = useCart();
     let { getItemWL, clickWishList } = useWishList();
     const [getProducts, setProducts] = useState([]);
     let navigate = useNavigate();
-    
+    let dispatch=useDispatch();
+
+
     useEffect(() => {
         async function fetchProducts() {
         try {
@@ -32,6 +34,15 @@ function Home() {
 
         alert("Da them san pham vao");
         navigate("/cart");
+    };
+
+    const handleAddtoReduxAction = (e, product) => {
+        e.preventDefault();
+        dispatch({
+            type: 'addCartReAc',
+            payload: product
+        });
+        alert("Đã thêm sản phẩm vào Redux Cart!");
     };
 
     const handleAddtoWishList = (e, productId)=>{
@@ -100,6 +111,12 @@ function Home() {
                         </li>
                         <li>
                         <a href="#!"><i className="fa fa-plus-square" /> Add to compare</a>
+                        </li>
+                        <li>
+                            <a href="#" onClick={(e) => handleAddtoReduxAction(e, product)}><i className="fa fa-plus-square"></i>Add to Redux-Action</a>
+                        </li>
+                        <li>
+                        <a href="#!"><i className="fa fa-plus-square" /> Add to Redux-Action</a>
                         </li>
                     </ul>
                     </div>

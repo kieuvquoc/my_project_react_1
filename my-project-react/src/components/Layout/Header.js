@@ -10,14 +10,17 @@ import {
   ChevronDown 
 } from 'lucide-react';
 import {useNavigate, Link} from 'react-router-dom';
-// Import các icon mạng xã hội từ react-icons/fa (FontAwesome)
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaDribbble } from 'react-icons/fa';
-import { useCart } from '../Product/ContextCart';
-import { useWishList } from '../Product/ContextWishList';
+import { useCart } from '../Product/Context/ContextCart';
+import { useWishList } from '../Product/Context/ContextWishList';
+import {useSelector} from 'react-redux';
 
 const Header = () => {
   let {tongCart} = useCart();
   let {tongWishList}=useWishList();
+
+  const CartList=useSelector(state=>state.cart.cart)||[];
+  const totalQtyReAc=CartList.reduce((total, item)=>total+item.qty,0);
 
   let kiemtra=localStorage.getItem('loginUser');
   let Navigate=useNavigate();
@@ -125,6 +128,7 @@ const Header = () => {
                       </li>
                   )}
                   <li><a href="checkout.html"><Crosshair size={14} className="inline-block mr-1" /> Checkout</a></li>
+                  <li><a href="checkout.html"><Crosshair size={14} className="inline-block mr-1" /><h3>({totalQtyReAc})</h3> ReduxAction</a></li>
                   {(tongCart > 0) ? (
                     <li>
                       <a href="/cart">

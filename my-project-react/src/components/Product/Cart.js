@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import Api from '../Api/Api';
 import { useNavigate} from 'react-router-dom';
-import {useCart} from './ContextCart';
+import {useCart} from './Context/ContextCart';
 
 function Cart({product}){
     const navigate = useNavigate();
