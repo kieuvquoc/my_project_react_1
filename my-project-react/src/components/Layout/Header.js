@@ -19,8 +19,13 @@ const Header = () => {
   let {tongCart} = useCart();
   let {tongWishList}=useWishList();
 
-  const CartList=useSelector(state=>state.cart.cart)||[];
-  const totalQtyReAc=CartList.reduce((total, item)=>total+item.qty,0);
+  // redux action
+  const CartListAC=useSelector(state=>state.cart?.cart)||[];
+  const totalQtyReAc=CartListAC.reduce((total, item)=>total+item.qty,0);
+
+  // redux toolkit
+  const CartListTK=useSelector(state=>state.counter?.cart)||[];
+  const totalQtyReTK=CartListTK.reduce((total, item)=>total+item.qty,0);
 
   let kiemtra=localStorage.getItem('loginUser');
   let Navigate=useNavigate();
@@ -128,6 +133,7 @@ const Header = () => {
                       </li>
                   )}
                   <li><a href="checkout.html"><Crosshair size={14} className="inline-block mr-1" /> Checkout</a></li>
+                  <li><a href="checkout.html"><Crosshair size={14} className="inline-block mr-1" /><h3>({totalQtyReTK})</h3> ReduxToolkit</a></li>
                   <li><a href="checkout.html"><Crosshair size={14} className="inline-block mr-1" /><h3>({totalQtyReAc})</h3> ReduxAction</a></li>
                   {(tongCart > 0) ? (
                     <li>

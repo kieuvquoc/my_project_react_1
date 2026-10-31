@@ -4,6 +4,7 @@ import Api from '../Api/Api';
 import { useCart } from '../Product/Context/ContextCart';
 import { useWishList} from '../Product/Context/ContextWishList';
 import {useDispatch} from 'react-redux';
+import {addCartTookit} from '../Product/Redux/ReduxTookit/CartReduxToolkit';
 
 function Home() {
     let {themCart} = useCart();
@@ -42,8 +43,15 @@ function Home() {
             type: 'addCartReAc',
             payload: product
         });
-        alert("Đã thêm sản phẩm vào Redux Cart!");
+        alert("Đã thêm sản phẩm vào ReduxAction Cart!");
     };
+
+    function handleAddtoReduxToolkit(e,product){
+        e.preventDefault();
+        
+        dispatch(addCartTookit(product));
+        alert("Đã thêm sản phẩm vào ReduxToolkit Cart!");
+    }
 
     const handleAddtoWishList = (e, productId)=>{
         e.preventDefault();
@@ -116,7 +124,7 @@ function Home() {
                             <a href="#" onClick={(e) => handleAddtoReduxAction(e, product)}><i className="fa fa-plus-square"></i>Add to Redux-Action</a>
                         </li>
                         <li>
-                        <a href="#!"><i className="fa fa-plus-square" /> Add to Redux-Action</a>
+                        <a href="#" onClick={(e)=> handleAddtoReduxToolkit(e,product)}><i className="fa fa-plus-square" /> Add to Redux-Toolkit</a>
                         </li>
                     </ul>
                     </div>

@@ -6,8 +6,9 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+
 import {Provider} from 'react-redux';
-import Store from './components/Product/ReduxAction/StoreAction';
+import Store from './components/Product/Redux/Store';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
